@@ -1,0 +1,28 @@
+config MCT_PIN_DI
+	tristate "digital input (PIN)"
+	depends on MCT
+	default n
+	help
+	If you want MCT digital input support (PIN), you should 
+	say Y here.  This driver deals directly with the controller 
+	pins and works as simple input(s), counter(s) or frequence(s).
+	This generic input support can also be built as a module.  
+	If so, the module will be called mct_pin_inp.ko.
+config MCT_PIN_DI_DEV_IF_MBUS
+	bool "Add M-Bus protocol" 
+	default n
+	depends on MCT_PIN_DI 
+	help
+	Select this if you want to have an MBUS client device interface!
+config MCT_PIN_DI_DEV_IF_MODBUS
+	bool "Add Modbus protocol" 
+	default n
+	depends on MCT_PIN_DI 
+	help
+	 Select this if you want to have an MODBUS slave device interface!
+config MCT_PIN_DI_DEV_DEBUG
+	bool "Add debug support" 
+	default n
+	depends on MCT_PIN_DI && MCT_DEBUG 
+	help
+	Select this if you want to have special device debug support!

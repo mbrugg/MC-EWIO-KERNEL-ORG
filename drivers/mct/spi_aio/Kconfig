@@ -1,0 +1,31 @@
+#
+# MCT device pic over spi configuration
+#
+config MCT_SPI_AIO
+	tristate "ananlog in/out driver (SPI-UART-PIC)"
+	depends on MCT && SPI
+	default n
+	help
+	If you want MCT spi digital in/out support, you should 
+	say Y here. This driver deals with the SPI_MASTER controller 
+	and works on the top.
+	This driver can also be built as a module.  
+	If so, the module will be called mct_out.
+config MCT_SPI_AIO_DEV_IF_MBUS
+	bool "Add M-Bus protocol" 
+	default n
+	depends on MCT_SPI_AIO
+	help
+	Select this if you want to have an MBUS client device interface!
+config MCT_SPI_AIO_DEV_IF_MODBUS
+	bool "Add Modbus protocol" 
+	default n
+	depends on MCT_SPI_AIO 
+	help
+	 Select this if you want to have an MODBUS slave device interface!
+config MCT_SPI_AIO_DEV_DEBUG
+	bool "Add debug support" 
+	default n
+	depends on MCT_SPI_AIO && MCT_DEBUG && SPI
+	help
+	Select this if you want to have special device debug support!

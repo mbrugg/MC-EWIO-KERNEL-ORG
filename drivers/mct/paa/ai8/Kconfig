@@ -1,0 +1,23 @@
+config MCT_PAA_AI8
+	tristate "paa ai8 slave - Attention: Don't use <*> only <M> or < >!"
+	default m
+	help
+	  This selects ai8 driver as module.
+config MCT_PAA_AI8_DEV_IF_MBUS
+	bool "Add M-Bus protocol" 
+	default n
+	depends on MCT_PAA_AI8 
+	help
+	 Select this if you want to have an MBUS client device interface!
+config MCT_PAA_AI8_DEV_IF_MODBUS
+	bool "Add Modbus protocol" 
+	default n
+	depends on MCT_PAA_AI8 
+	help
+	 Select this if you want to have an MODBUS slave device interface!
+config MCT_PAA_AI8_DEV_DEBUG
+	bool "Add debug support" 
+	default n
+	depends on MCT_DEBUG && MCT_PAA_AI8 
+	help
+	Select this if you want to have special ai8-lbus-device debug support!

@@ -1,0 +1,74 @@
+#
+# MCT PAA configuration
+#
+
+# -------------------------
+# CORE-PART
+# -------------------------
+comment "Type: PAA-drivers"
+config MCT_PAA
+	tristate "PAA-Core-component"
+	depends on MCT_PAA_SUBSYS
+	default m
+	help
+	  Please select core component!
+
+# -------------------------
+# MASTER-PART
+# -------------------------
+menu "PAA-masters"
+depends on MCT_PAA
+
+config MCT_PAA_SPI
+	tristate "PAA-master over SPI"
+	default y
+	depends on SPI
+	help
+	  This selects master driver over SPI.
+
+#config MCT_PAA_COM
+#	tristate "PAA-master over COM"
+#	help	
+#	  This selects master driver over COM.
+
+config MCT_PAA_DEBUG
+	bool "Add paa-master debug support" 
+	default y
+	depends on MCT_DEBUG && (MCT_PAA_SPI || MCT_PAA_COM) 
+	help
+	Select this if you want to have special master debug support!
+
+config MCT_PAA_SLOTS_MAX
+	int "Paa-slaves maximum supported (1...6)"
+	depends on MCT_PAA_SPI || MCT_PAA_COM
+	default "6"
+	help
+		Determines the paa-slots used for paa-slave-drivers.
+		Amount of these will supported by paa-master.
+		If compiled paa-master as build-in-driver the paa-slots
+		amount will be fixed in kernel.
+		If compiled paa-master as module-driver the paa-slosts
+		amount can overloaded by command line parameter.
+endmenu
+
+# ---------------------------------
+# SLAVE-PART
+# ---------------------------------
+menu "PAA-slaves"
+depends on MCT_PAA && (MCT_PAA_SPI || MCT_PAA_COM)
+
+source "drivers/mct/paa/di4/Kconfig"
+
+source "drivers/mct/paa/di10/Kconfig"
+
+source "drivers/mct/paa/do4/Kconfig"
+
+source "drivers/mct/paa/dio42/Kconfig"
+
+source "drivers/mct/paa/ai8/Kconfig"
+
+source "drivers/mct/paa/ao4/Kconfig"
+
+endmenu
+
+

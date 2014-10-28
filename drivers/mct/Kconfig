@@ -1,0 +1,48 @@
+#
+# MCT device configuration
+#
+menuconfig MCT
+	bool "MCT support"
+	help
+		If you want MCT extensions, you should say Y here. 
+		Some MCT drivers, are Top-Level SPI drivers, so you
+		have to configure SPI_MASTER first!
+		See below what kind of, and then take your selection.
+
+if MCT
+
+config MCT_DEBUG
+	boolean "Debug Support"
+	default y
+	help 
+		Say "yes" to enable MCT debugging messages.
+		Normally, you should say 'N'.
+
+config MCT_DEBUG_VERBOSE
+	int "Debugging verbosity (0=quiet, 1=init/exit 2=timer/spi, 3=noise[json] 4=verbose[keys])"
+	depends on MCT_DEBUG
+	default "0"
+	help
+		Determines the verbosity level of the MCT debugging messages.
+
+config MCT_PAA_SUBSYS
+	boolean "PAA Sub-System Support"
+	default y
+	help
+		Determines the extension of process mirror.
+#----------------------------------------------
+comment "Type: GENERIC-drivers"
+
+source "drivers/mct/pin_di/Kconfig"
+
+comment "Type: SPI-drivers"
+
+source "drivers/mct/spi_dio/Kconfig"
+
+source "drivers/mct/spi_aio/Kconfig"
+
+if MCT_PAA_SUBSYS
+	source "drivers/mct/paa/Kconfig"
+endif #MCT_PAA_SUBSYS
+
+endif #MCT
