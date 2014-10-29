@@ -113,7 +113,8 @@ static void __init mcwebio_map_io(void)
 	at91_set_serial_console(0);
 	
 	//flash bug Adresspin 25 as io
-	at91_set_gpio_output(AT91_PIN_PC8,0);
+	at91_set_gpio_output(AT91_PIN_PC8, 0);
+	at91_set_gpio_output(AT91_PIN_PC10, 0);
 	at91_set_B_periph(AT91_PIN_PA5, 0);		/* TXD3 */
 	at91_set_A_periph(AT91_PIN_PA5, 1);		/* NPCS2 */
 }

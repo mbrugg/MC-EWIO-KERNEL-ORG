@@ -35,7 +35,7 @@ static unsigned char* virt_memory1_vector;
 
 #define MCWEBIO_FLASH_PHYS_START 0x10000000 
 #ifdef MCWEBIO_FLASH_PIO
-	#define MCWEBIO_FLASH_LEN 	64*1024*1024
+	#define MCWEBIO_FLASH_LEN 	128*1024*1024
 #else
 	#define MCWEBIO_FLASH_LEN 	32*1024*1024
 #endif
@@ -45,6 +45,10 @@ static unsigned char* virt_memory1_vector;
 #define VIRT_SEC2_OFS 	0x01000000
 #define VIRT_SEC3_OFS 	0x02000000
 #define VIRT_SEC4_OFS	0x03000000
+#define VIRT_SEC5_OFS	0x04000000
+#define VIRT_SEC6_OFS	0x05000000
+#define VIRT_SEC7_OFS	0x06000000
+#define VIRT_SEC8_OFS	0x07000000
 
 
 #ifdef MCWEBIO_FLASH_CS
@@ -86,24 +90,52 @@ return ret;
 inline uint16_t* mcwebio_ofs_to_virt(struct map_info *map, unsigned long ofs)
 {
 	uint16_t* ret;	
-	if (ofs >= VIRT_SEC4_OFS)
+	if (ofs >= VIRT_SEC8_OFS)
 		{
 		at91_set_gpio_value(AT91_PIN_PC8, 1);
+		at91_set_gpio_value(AT91_PIN_PC10, 0);
 		ret = (uint16_t*)(map->virt + ofs);
+		}	
+	else if (ofs >= VIRT_SEC7_OFS)
+		{
+		at91_set_gpio_value(AT91_PIN_PC8, 0);
+		at91_set_gpio_value(AT91_PIN_PC10, 0);
+		ret = (uint16_t*)(map->virt + ofs);
+		}
+	else if (ofs >= VIRT_SEC6_OFS)
+		{
+		at91_set_gpio_value(AT91_PIN_PC8, 1);
+		at91_set_gpio_value(AT91_PIN_PC10, 0);
+		ret = (uint16_t*)(map->virt + ofs);
+		}
+	else if (ofs >= VIRT_SEC5_OFS)
+		{
+		at91_set_gpio_value(AT91_PIN_PC8, 0);
+		at91_set_gpio_value(AT91_PIN_PC10, 0);
+		ret = (uint16_t*)(map->virt + ofs);
+		}
+	else if (ofs >= VIRT_SEC4_OFS)
+		{
+		at91_set_gpio_value(AT91_PIN_PC8, 1);
+		at91_set_gpio_value(AT91_PIN_PC10, 1);
+		ret = (uint16_t*)(map->virt + ofs);		
 		}
 	else if (ofs >= VIRT_SEC3_OFS)
 		{
 		at91_set_gpio_value(AT91_PIN_PC8, 0);
-		ret = (uint16_t*)(map->virt + ofs);
+		at91_set_gpio_value(AT91_PIN_PC10, 1);
+		ret = (uint16_t*)(map->virt + ofs);		
 		}
 	else if (ofs >= VIRT_SEC2_OFS)
 		{
 		at91_set_gpio_value(AT91_PIN_PC8, 1);
+		at91_set_gpio_value(AT91_PIN_PC10, 1);
 		ret = (uint16_t*)(map->virt + ofs);		
 		}
 	else
 		{
 		at91_set_gpio_value(AT91_PIN_PC8, 0);
+		at91_set_gpio_value(AT91_PIN_PC10, 1);
 		ret = (uint16_t*)(map->virt + ofs);
 		}
 return ret;
@@ -178,7 +210,7 @@ static int __init init_mcwebio_flash(void)
 	printk (KERN_NOTICE "mcwebio flash support (%d-bit bankwidth)\n",
 		mcwebio_map.bankwidth*8);
 
-	mcwebio_map.virt = ioremap(MCWEBIO_FLASH_PHYS_START, 64*1024*1024);
+	mcwebio_map.virt = ioremap(MCWEBIO_FLASH_PHYS_START, 128*1024*1024);
 	virt_memory1_vector=mcwebio_map.virt;
 	if (!mcwebio_map.virt) {
 		printk("Failed to ioremap\n");
@@ -189,7 +221,7 @@ static int __init init_mcwebio_flash(void)
 	at91_set_gpio_output(AT91_PIN_PC8, 0);
 
 #ifdef MCWEBIO_FLASH_CS
-	virt_memory2_vector = ioremap(MCWEBIO_FLASH_PHYS_START2, 64*1024*1024);
+	virt_memory2_vector = ioremap(MCWEBIO_FLASH_PHYS_START2, 128*1024*1024);
 	if ((!mcwebio_map.virt)||(!virt_memory2_vector)) {
 		printk("Failed to ioremap\n");
 		return -EIO;
